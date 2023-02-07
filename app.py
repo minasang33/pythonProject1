@@ -239,7 +239,7 @@ def index():
         prevData = timeList6
 
     print(data)
-    return render_template('index.html', title="bitfind23", time=t, data=data, prev=prevData)
+    return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData)
 
 
 if __name__ == '__main__':
