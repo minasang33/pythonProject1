@@ -161,7 +161,7 @@ def scheduler():
      #timeList[currentIndex] = data
 
     # 매일 0시 실행
-    @sched.scheduled_job('cron', hour='0', id='test_0')
+    @sched.scheduled_job('cron', hour='15', id='test_0')
     def job0():
         global timeList1
         timeList1 = get_crolling()
@@ -169,7 +169,7 @@ def scheduler():
         print(timeList1)
 
     # 매일 4시 실행
-    @sched.scheduled_job('cron', hour='4', id='test_1')
+    @sched.scheduled_job('cron', hour='19', id='test_1')
     def job1():
         global timeList2
         timeList2 = get_crolling()
@@ -177,7 +177,7 @@ def scheduler():
         print(timeList2)
 
     # 매일 8시 실행
-    @sched.scheduled_job('cron', hour='8', id='test_2')
+    @sched.scheduled_job('cron', hour='23', id='test_2')
     def job2():
         global timeList3
         timeList3 = get_crolling()
@@ -186,7 +186,7 @@ def scheduler():
 
 
     # 매일 12시 실행
-    @sched.scheduled_job('cron', hour='12', id='test_3')
+    @sched.scheduled_job('cron', hour='3', id='test_3')
     def job3():
         global timeList4
         timeList4 = get_crolling()
@@ -195,7 +195,7 @@ def scheduler():
 
 
     # 매일 16시 실행
-    @sched.scheduled_job('cron', hour='16', id='test_4')
+    @sched.scheduled_job('cron', hour='7', id='test_4')
     def job4():
         global timeList5
         timeLIst5 = get_crolling()
@@ -204,7 +204,7 @@ def scheduler():
 
 
     # 매일 20시 실행
-    @sched.scheduled_job('cron', hour='20', id='test_5')
+    @sched.scheduled_job('cron', hour='11', id='test_5')
     def job5():
         global timeList6
         timeList6 = get_crolling()
