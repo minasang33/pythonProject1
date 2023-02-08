@@ -20,8 +20,7 @@ timeList4 = []
 timeList5 = []
 timeList6 = []
 
-
-
+top10 = []
 
 #스케줄 실행 코드
 def scheduler():
@@ -31,19 +30,50 @@ def printListout(copyArr, preCnt, prevValue):
         "id": copyArr[0],
         "ticker": copyArr[1],
         "change": preCnt+"->"+copyArr[0],
-        "prevValue": prevValue
+        "prevValue": prevValue,
+        "bw": int(preCnt) - int(copyArr[0])
     }
     return pList
 
 
 def compareList(oldList, newList):
-    top10 = []
+    global top10
+    result = []
     for n in newList:
         for o in oldList:
             if n[1] == o[1]: #ticker 가 같은지 비교
-                top10.append( printListout(n, o[0], o[6]) )
+                arr = printListout(n, o[0], o[6])
+                result.append(arr)
+                between = int(n[0]) - int(o[0])
+                fArr = []
+                bArr = []
+
+                if len(top10) == 0:
+                    top10.append(arr)
+                else:
+
+                    for x in top10:
+
+                        if x['bw'] >= between:
+                            bArr.append(x.copy())
+                        else:
+                            fArr.append(x.copy())
+
+                    if len(fArr) == 0:
+                        fArr = [arr.copy()]
+                    else:
+                        fArr += [arr]
+
+                    if len(bArr) != 0:
+                        fArr += bArr
+                    top10 = fArr.copy()
+
+
+                    if len(top10) > 10:
+                        top10.pop()
+                    print('top10', top10)
                 break
-    return top10
+    return result
 
 
 def get_crolling():
@@ -113,24 +143,18 @@ def get_crolling():
     # print(ticker_list)
 
     newList = [ticker_list[i:i + 10] for i in range(0, len(ticker_list), 10)]
-    top10 = []
+    result = []
 
     if len(oldList) == 0:
         oldList = newList
         for i in newList:
-            top10.append(printListout(i, i[0], i[6]))
+            result.append(printListout(i, i[0], i[6]))
 
     else:
-        top10 = compareList(oldList, newList)
+        result = compareList(oldList, newList)
 
-    # message = " 순위 |  종목   |    거래대금   | 변동사항 상세 |  이전 거래대금 \n"
-    # message=''
-
-    # for x in top10:
-    #     message += str(x) +"\n"
-
-    print(top10)
-    return top10
+    print(result)
+    return result
 
 def findData(data):
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
@@ -169,7 +193,7 @@ def scheduler():
         print(timeList1)
 
     # 매일 4시 실행
-    @sched.scheduled_job('cron', hour='19', id='test_1')
+    @sched.scheduled_job('cron', hour='19',id='test_1')
     def job1():
         global timeList2
         timeList2 = get_crolling()
@@ -198,7 +222,7 @@ def scheduler():
     @sched.scheduled_job('cron', hour='7', id='test_4')
     def job4():
         global timeList5
-        timeLIst5 = get_crolling()
+        timeList5 = get_crolling()
         print(f'job4 : {time.strftime("%H:%M:%S")}')
         print(timeList5)
 
@@ -238,9 +262,7 @@ def index():
         data = timeList1
         prevData = timeList6
 
-    print(data)
-    return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData)
-
+    return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData, top10=top10)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
