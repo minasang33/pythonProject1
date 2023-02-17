@@ -185,7 +185,7 @@ def scheduler():
      #timeList[currentIndex] = data
 
     # 매일 0시 실행
-    @sched.scheduled_job('cron', hour='1', minute='15', id='test_0')
+    @sched.scheduled_job('cron', hour='1', minute='30', id='test_0')
     def job0():
         global timeList1
         print('start job0')
@@ -237,6 +237,7 @@ def scheduler():
         print(timeList6)
 
     sched.start()
+    print('start complete')
     return redirect( url_for('index') )
 
 
