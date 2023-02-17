@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+import chromedriver_binary  # Adds chromedriver binary to path
 
 url ="https://coinmarketcap.com/exchanges/upbit/"
 oldList =[]
@@ -83,10 +84,15 @@ def get_crolling():
     # Chrome의 경우 | 아까 받은 chromedriver의 위치를 지정해준다.
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument("disable-gpu")
+    chrome_options.add_argument(
+        f'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36')
     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    #driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     driver.implicitly_wait(3)
-    # chrome 창을 원하는 가로폭과 세로폭으로 저정합니다.
+    # chrome 창을 원하는 가로폭과 세로폭으로 저정합니다.ß
     driver.set_window_size(1024, 968)
 
     driver.get(url)
