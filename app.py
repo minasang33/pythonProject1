@@ -264,6 +264,9 @@ def index():
         data = timeList1
         prevData = timeList6
 
+    data = get_crolling()
+    print(f'job0 : {time.strftime("%H:%M:%S")}')
+
     return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData, top10=top10)
 
 if __name__ == '__main__':
