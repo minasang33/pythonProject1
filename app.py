@@ -210,7 +210,7 @@ def scheduler():
 
 
     # 매일 12시 실행
-    @sched.scheduled_job('cron', hour='3', id='test_3')
+    @sched.scheduled_job('cron', hour='1', id='test_3')
     def job3():
         global timeList4
         timeList4 = get_crolling()
