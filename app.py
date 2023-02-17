@@ -185,7 +185,7 @@ def scheduler():
      #timeList[currentIndex] = data
 
     # 매일 0시 실행
-    @sched.scheduled_job('cron', hour='1', minute='5', id='test_0')
+    @sched.scheduled_job('cron', hour='1', minute='10', id='test_0')
     def job0():
         global timeList1
         timeList1 = get_crolling()
