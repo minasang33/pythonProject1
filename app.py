@@ -177,7 +177,7 @@ def findData(data):
 def scheduler():
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
     sched = BackgroundScheduler(daemon=True, timezone='Asia/Seoul')
-
+    print('scheduter start')
     sched.remove_all_jobs()
 
     #findData( get_crolling())
@@ -185,7 +185,7 @@ def scheduler():
      #timeList[currentIndex] = data
 
     # 매일 0시 실행
-    @sched.scheduled_job('cron', hour='1', minute='10', id='test_0')
+    @sched.scheduled_job('cron', hour='1', minute='15', id='test_0')
     def job0():
         global timeList1
         timeList1 = get_crolling()
