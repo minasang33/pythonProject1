@@ -188,6 +188,7 @@ def scheduler():
     @sched.scheduled_job('cron', hour='1', minute='15', id='test_0')
     def job0():
         global timeList1
+        print('start job0')
         timeList1 = get_crolling()
         print(f'job0 : {time.strftime("%H:%M:%S")}')
         print(timeList1)
