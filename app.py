@@ -217,9 +217,9 @@ def scheduler():
     # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    sched.add_job(job51, 'cron', hour='23', minute='31')
-    sched.add_job(job52, 'cron', hour='23', minute='32')
-    sched.add_job(job53, 'cron', hour='23', minute='33')
+    sched.add_job(job51, 'cron', hour='23', minute='35')
+    sched.add_job(job52, 'cron', hour='23', minute='36')
+    sched.add_job(job53, 'cron', hour='23', minute='37')
 
     sched.start()
     print("scheduler start")
@@ -249,7 +249,7 @@ def index():
     else:
         data = timeList1
         prevData = timeList6
-    scheduler()
+
     print("data", data)
     print("top10", top10)
     return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData, top10=top10)
