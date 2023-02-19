@@ -142,6 +142,7 @@ def findData(data):
         timeList1 = data
 @app.route('/scheduler')
 def scheduler():
+    print("scheduler start")
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
     sched = BackgroundScheduler(daemon=True, timezone='Asia/Seoul')
 
@@ -195,14 +196,16 @@ def scheduler():
 
 
     # 매일 20시 실행
-    @sched.scheduled_job('cron', hour='23', id='test_5')
+    @sched.scheduled_job('cron', hour='23', minute='03', id='test_5')
     def job5():
+        print("scheduler 23")
         global timeList6
         timeList6 = get_crolling()
         print(f'job5 : {time.strftime("%H:%M:%S")}')
         print(timeList6)
 
     sched.start()
+    print("scheduler start")
     return redirect( url_for('index') )
 
 
