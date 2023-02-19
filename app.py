@@ -204,13 +204,13 @@ def scheduler():
         print(f'job5 : {time.strftime("%H:%M:%S")}')
         print(timeList6)
 
-    @sched.scheduled_job('cron', hour='23', minute='10', id='test_51')
+    @sched.scheduled_job('cron', hour='23', minute='15', id='test_51')
     def job51():
         print("sche 51")
-    @sched.scheduled_job('cron', hour='23', minute='11', id='test_52')
+    @sched.scheduled_job('cron', hour='23', minute='16', id='test_52')
     def job52():
         print("sche 52")
-    @sched.scheduled_job('cron', hour='23', minute='12', id='test_53')
+    @sched.scheduled_job('cron', hour='23', minute='17', id='test_53')
     def job53():
         print("sche 53")
 
