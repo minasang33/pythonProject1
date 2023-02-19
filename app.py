@@ -220,7 +220,7 @@ def scheduler():
     sched.add_job(job51, 'cron', hour='23', minute='35')
     sched.add_job(job52, 'cron', hour='23', minute='36')
     sched.add_job(job53, 'cron', hour='23', minute='37')
-
+    sched.add_job(job51, 'interval', seconds=2)
     sched.start()
     print("scheduler start")
     return redirect( url_for('index') )
