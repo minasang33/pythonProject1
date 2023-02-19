@@ -140,6 +140,46 @@ def findData(data):
         timeList2 = data
     else:
         timeList1 = data
+
+def job0():
+    global timeList1
+    timeList1 = get_crolling()
+    print(f'job0 : {time.strftime("%H:%M:%S")}')
+    print(timeList1)
+def job1():
+    global timeList2
+    timeList2 = get_crolling()
+    print(f'job1 : {time.strftime("%H:%M:%S")}')
+    print(timeList2)
+def job2():
+    global timeList3
+    timeList3 = get_crolling()
+    print(f'job2 : {time.strftime("%H:%M:%S")}')
+    print(timeList3)
+def job3():
+    global timeList4
+    timeList4 = get_crolling()
+    print(f'job3 : {time.strftime("%H:%M:%S")}')
+    print(timeList4)
+def job4():
+    global timeList5
+    timeList5 = get_crolling()
+    print(f'job4 : {time.strftime("%H:%M:%S")}')
+    print(timeList5)
+def job5():
+    print("scheduler 23")
+    global timeList6
+    timeList6 = get_crolling()
+    print(f'job5 : {time.strftime("%H:%M:%S")}')
+    print(timeList6)
+
+def job51():
+    print("sche 51")
+
+def job52():
+    print("sche 52")
+def job53():
+    print("sche 53")
 @app.route('/scheduler')
 def scheduler():
     print("scheduler start")
@@ -153,66 +193,33 @@ def scheduler():
      #timeList[currentIndex] = data
 
     # 매일 0시 실행
-    @sched.scheduled_job('cron', hour='3', id='test_0')
-    def job0():
-        global timeList1
-        timeList1 = get_crolling()
-        print(f'job0 : {time.strftime("%H:%M:%S")}')
-        print(timeList1)
-
-    # 매일 4시 실행
-    @sched.scheduled_job('cron', hour='7',id='test_1')
-    def job1():
-        global timeList2
-        timeList2 = get_crolling()
-        print(f'job1 : {time.strftime("%H:%M:%S")}')
-        print(timeList2)
-
-    # 매일 8시 실행
-    @sched.scheduled_job('cron', hour='11', id='test_2')
-    def job2():
-        global timeList3
-        timeList3 = get_crolling()
-        print(f'job2 : {time.strftime("%H:%M:%S")}')
-        print(timeList3)
-
-
-    # 매일 12시 실행
-    @sched.scheduled_job('cron', hour='15', id='test_3')
-    def job3():
-        global timeList4
-        timeList4 = get_crolling()
-        print(f'job3 : {time.strftime("%H:%M:%S")}')
-        print(timeList4)
+    # @sched.add_job(job0, 'cron', hour='3')
+    #
+    # # 매일 4시 실행
+    # @sched.scheduled_job('cron', hour='7',id='test_1')
+    #
+    # # 매일 8시 실행
+    # @sched.scheduled_job('cron', hour='11', id='test_2')
+    #
+    #
+    #
+    # # 매일 12시 실행
+    # @sched.scheduled_job('cron', hour='15', id='test_3')
+    #
+    #
+    #
+    # # 매일 16시 실행
+    # @sched.scheduled_job('cron', hour='19', id='test_4')
+    #
+    #
+    #
+    # # 매일 20시 실행
+    # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    # 매일 16시 실행
-    @sched.scheduled_job('cron', hour='19', id='test_4')
-    def job4():
-        global timeList5
-        timeList5 = get_crolling()
-        print(f'job4 : {time.strftime("%H:%M:%S")}')
-        print(timeList5)
-
-
-    # 매일 20시 실행
-    @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
-    def job5():
-        print("scheduler 23")
-        global timeList6
-        timeList6 = get_crolling()
-        print(f'job5 : {time.strftime("%H:%M:%S")}')
-        print(timeList6)
-
-    @sched.scheduled_job('cron', hour='23', minute='15', id='test_51')
-    def job51():
-        print("sche 51")
-    @sched.scheduled_job('cron', hour='23', minute='16', id='test_52')
-    def job52():
-        print("sche 52")
-    @sched.scheduled_job('cron', hour='23', minute='17', id='test_53')
-    def job53():
-        print("sche 53")
+    sched.add_job(job51, 'cron', hour='23', minute='31')
+    sched.add_job(job52, 'cron', hour='23', minute='32')
+    sched.add_job(job53, 'cron', hour='23', minute='33')
 
     sched.start()
     print("scheduler start")
