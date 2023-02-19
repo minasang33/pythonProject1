@@ -74,7 +74,7 @@ def compareList(oldList, newList):
 
 
 def get_crolling():
-    # print('get_crolling start')
+    print('get_crolling start')
     global oldList
     url1 = "https://api.upbit.com/v1/market/all"
     response = requests.get(url1)
@@ -242,9 +242,10 @@ def index():
     else:
         data = timeList1
         prevData = timeList6
+    scheduler()
     print("data", data)
     print("top10", top10)
     return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData, top10=top10)
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=8000, debug=True)
+    app.run()
