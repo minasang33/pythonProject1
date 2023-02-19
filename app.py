@@ -196,7 +196,7 @@ def scheduler():
 
 
     # 매일 20시 실행
-    @sched.scheduled_job('cron', hour='23', minute='03', id='test_5')
+    @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
     def job5():
         print("scheduler 23")
         global timeList6
