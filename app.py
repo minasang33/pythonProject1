@@ -126,7 +126,8 @@ def get_crolling():
 def findData(data):
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
 
-    t = datetime.now().hour
+    t = datetime.now().timedelta(hours=9).hour
+
     print("hour:", t)
     if 20 <= t:
         timeList6 = data
@@ -167,19 +168,10 @@ def job4():
     print(f'job4 : {time.strftime("%H:%M:%S")}')
     print(timeList5)
 def job5():
-    print("scheduler 23")
     global timeList6
     timeList6 = get_crolling()
     print(f'job5 : {time.strftime("%H:%M:%S")}')
     print(timeList6)
-
-def job51(data):
-    print("sche 51", data)
-
-def job52(data):
-    print("sche 52", data)
-def job53(data):
-    print("sche 53", data)
 @app.route('/scheduler')
 def scheduler():
     print("scheduler start")
@@ -188,46 +180,22 @@ def scheduler():
 
     sched.remove_all_jobs()
 
-    #findData( get_crolling())
-
-     #timeList[currentIndex] = data
-
     # 매일 0시 실행
-    # @sched.add_job(job0, 'cron', hour='3')
-    #
-    # # 매일 4시 실행
-    # @sched.scheduled_job('cron', hour='7',id='test_1')
-    #
-    # # 매일 8시 실행
-    # @sched.scheduled_job('cron', hour='11', id='test_2')
-    #
-    #
-    #
-    # # 매일 12시 실행
-    # @sched.scheduled_job('cron', hour='15', id='test_3')
-    #
-    #
-    #
-    # # 매일 16시 실행
-    # @sched.scheduled_job('cron', hour='19', id='test_4')
-    #
-    #
-    #
-    # # 매일 20시 실행
-    # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
-
-
-    sched.add_job(job51, 'cron', hour='0', minute='33', args=['utc'])
-    sched.add_job(job52, 'cron', hour='0', minute='34', args=['utc'])
-    sched.add_job(job53, 'cron', hour='0', minute='35', args=['utc'])
-    sched.add_job(job51, 'cron', hour='9', minute='33', args=['kor'])
-    sched.add_job(job52, 'cron', hour='9', minute='34', args=['kor'])
-    sched.add_job(job53, 'cron', hour='9', minute='35', args=['kor'])
+    sched.add_job(job0, 'cron', hour='0')
+    # 매일 4시 실행
+    sched.add_job(job1, 'cron', hour='4')
+    # 매일 8시 실행
+    sched.add_job(job2, 'cron', hour='8')
+    # 매일 12시 실행
+    sched.add_job(job3, 'cron', hour='12')
+    # 매일 16시 실행
+    sched.add_job(job4, 'cron', hour='16')
+    # 매일 20시 실행
+    sched.add_job(job5, 'cron', hour='20')
 
     sched.start()
     print("scheduler start")
     return redirect( url_for('index') )
-
 
 @app.route('/') # 접속하는 url
 def index():
