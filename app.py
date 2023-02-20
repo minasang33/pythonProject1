@@ -188,6 +188,7 @@ def scheduler():
     sched.add_job(job2, 'cron', hour='8')
     # 매일 12시 실행
     sched.add_job(job3, 'cron', hour='12')
+    sched.add_job(job3, 'cron', hour='13', minute='2')
     # 매일 16시 실행
     sched.add_job(job4, 'cron', hour='16')
     # 매일 20시 실행
