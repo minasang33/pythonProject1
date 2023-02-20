@@ -184,7 +184,7 @@ def job53():
 def scheduler():
     print("scheduler start")
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
-    sched = BackgroundScheduler(daemon=True, timezone='Asia/Seoul')
+    sched = BackgroundScheduler()
 
     sched.remove_all_jobs()
 
@@ -217,9 +217,9 @@ def scheduler():
     # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    sched.add_job(job51, 'cron', hour='0', minute='3')
-    sched.add_job(job52, 'cron', hour='0', minute='4')
-    sched.add_job(job53, 'cron', hour='0', minute='5')
+    sched.add_job(job51, 'cron', hour='0', minute='23')
+    sched.add_job(job52, 'cron', hour='0', minute='24')
+    sched.add_job(job53, 'cron', hour='0', minute='25')
 
     sched.start()
     print("scheduler start")
