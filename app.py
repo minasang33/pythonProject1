@@ -200,7 +200,7 @@ def scheduler():
 @app.route('/') # 접속하는 url
 def index():
     global top10
-    t = datetime.now().hour
+    t = datetime.now().timedelta(hours=9).hour
     print("hour:", t)
     if 23 <= t:
         data = timeList6
