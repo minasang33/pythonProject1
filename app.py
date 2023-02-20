@@ -190,7 +190,7 @@ def scheduler():
     sched.add_job(job2, 'cron', hour='8')
     # 매일 12시 실행
     sched.add_job(job3, 'cron', hour='12')
-    sched.add_job(job3, 'cron', hour='13', minute='23')
+    sched.add_job(job3, 'cron', hour='13', minute='26')
     # 매일 16시 실행
     sched.add_job(job4, 'cron', hour='16')
     # 매일 20시 실행
@@ -208,19 +208,19 @@ def index():
     t = today + hour
     t = t.hour
     print("hour:", t)
-    if 23 <= t:
+    if 20 <= t:
         data = timeList6
         prevData = timeList5
-    elif 19 <= t:
+    elif 16 <= t:
         data = timeList5
         prevData = timeList4
-    elif 15 <= t:
+    elif 12 <= t:
         data = timeList4
         prevData = timeList3
-    elif 11 <= t:
+    elif 8 <= t:
         data = timeList3
         prevData = timeList2
-    elif 7 <= t:
+    elif 4 <= t:
         data = timeList2
         prevData = timeList1
     else:
