@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime as dt
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, redirect, url_for  # Flask 라이브러리 선언
@@ -126,8 +126,10 @@ def get_crolling():
 def findData(data):
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
 
-    t = datetime.now().timedelta(hours=9).hour
-
+    today = dt.datetime.now()
+    hour = dt.timedelta(hours=9)
+    t = today + hour
+    t = t.hour
     print("hour:", t)
     if 20 <= t:
         timeList6 = data
@@ -188,7 +190,7 @@ def scheduler():
     sched.add_job(job2, 'cron', hour='8')
     # 매일 12시 실행
     sched.add_job(job3, 'cron', hour='12')
-    sched.add_job(job3, 'cron', hour='13', minute='5')
+    sched.add_job(job3, 'cron', hour='13', minute='23')
     # 매일 16시 실행
     sched.add_job(job4, 'cron', hour='16')
     # 매일 20시 실행
@@ -201,7 +203,10 @@ def scheduler():
 @app.route('/') # 접속하는 url
 def index():
     global top10
-    t = datetime.now().timedelta(hours=9).hour
+    today = dt.datetime.now()
+    hour = dt.timedelta(hours=9)
+    t = today + hour
+    t = t.hour
     print("hour:", t)
     if 23 <= t:
         data = timeList6
@@ -224,7 +229,7 @@ def index():
 
     print("data", data)
     print("top10", top10)
-    return render_template('index.html', title="bitfind23", time=datetime.now(), data=data, prev=prevData, top10=top10)
+    return render_template('index.html', title="bitfind23", time=dt.datetime.now(), data=data, prev=prevData, top10=top10)
 
 if __name__ == '__main__':
     app.run()
