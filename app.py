@@ -173,18 +173,18 @@ def job5():
     print(f'job5 : {time.strftime("%H:%M:%S")}')
     print(timeList6)
 
-def job51():
-    print("sche 51")
+def job51(data):
+    print("sche 51", data)
 
-def job52():
-    print("sche 52")
-def job53():
-    print("sche 53")
+def job52(data):
+    print("sche 52", data)
+def job53(data):
+    print("sche 53", data)
 @app.route('/scheduler')
 def scheduler():
     print("scheduler start")
     global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
-    sched = BackgroundScheduler()
+    sched = BackgroundScheduler(timezone='Asia/Seoul')
 
     sched.remove_all_jobs()
 
@@ -217,9 +217,12 @@ def scheduler():
     # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    sched.add_job(job51, 'cron', hour='0', minute='23')
-    sched.add_job(job52, 'cron', hour='0', minute='24')
-    sched.add_job(job53, 'cron', hour='0', minute='25')
+    sched.add_job(job51, 'cron', hour='0', minute='30')
+    sched.add_job(job52, 'cron', hour='0', minute='31')
+    sched.add_job(job53, 'cron', hour='0', minute='32')
+    sched.add_job(job51, 'cron', hour='9', minute='30', args=['kor'])
+    sched.add_job(job52, 'cron', hour='9', minute='31', args=['kor'])
+    sched.add_job(job53, 'cron', hour='9', minute='32', args=['kor'])
 
     sched.start()
     print("scheduler start")
