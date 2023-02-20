@@ -18,10 +18,17 @@ ul.tabs li.on{
 
 .tab-content{
   display: none;
-  padding: 15px 0;
+  padding: 50px 0;
   border-top:3px solid #eee;
 }
 
 .tab-content.on{
   display: inherit;
+}
+
+ul{
+    list-style:none;
+}
+li{
+    float:left;
 }

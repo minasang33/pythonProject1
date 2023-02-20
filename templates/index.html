@@ -5,29 +5,32 @@
     <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+
     <title>{{ title }}</title>
 </head>
 <body>
 <div class="container">
     <h1>{{ title }}</h1>
-    <p align="right"> {{ time }} </p>
+    <p align="right"> UTC : {{ time }} </p>
+    <p align="right"> KST : {{ ktime }} </p>
     <hr>
 
     <ul class="tabs">
         <li class="tab-link on" data-tab="menu1"><a href="#">순위 리스트</a></li>
         <li class="tab-link" data-tab="menu2"><a href="#">변동 순위 TOP10</a></li>
+        <li class="tab-link " data-tab="menu3"><a href="#">과거 리스트</a></li>
     </ul>
 
     <div id="menu1" class="tab-content on">
-        <h3>순위 리스트</h3>
-<!--        <p> This is menu1 content</p>-->
+
         <table id="dic1" class="display" style="width:100%">
             <thead>
             <tr>
                 <th style="width:6%"> 순위</th>
                 <th>종목</th>
                 <th>변경사항</th>
-                <th style="width:7%">상승폭</th>
+                <th style="width:8%">상승폭</th>
                 <th>이전 거래대금</th>
             </tr>
             </thead>
@@ -35,7 +38,7 @@
     </div>
 
     <div id="menu2" class="tab-content">
-        <h3>변동 순위 TOP10</h3>
+
 <!--        <p> This is menu2 content</p>-->
         <table id="dic2" class="display" style="width:100%">
             <thead>
@@ -43,7 +46,44 @@
                 <th style="width:6%">순위</th>
                 <th>종목</th>
                 <th>변경사항</th>
-                <th style="width:7%">상승폭</th>
+                <th style="width:8%">상승폭</th>
+                <th>이전 거래대금</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div id="menu3" class="tab-content">
+
+        <div style="display:flex;">
+        <ul>
+            <li>
+                <button id="time0">0시 </button>
+            </li>
+            <li>
+                <button id="time4">4시 </button>
+            </li>
+            <li>
+                <button id="time8">8시 </button>
+            </li>
+            <li>
+                <button id="time12">12시 </button>
+            </li>
+            <li>
+                <button id="time16">16시 </button>
+            </li>
+            <li>
+                <button id="time20">20시 </button>
+            </li>
+        </ul>
+        </div>
+<!--        <p> This is menu2 content</p>-->
+        <table id="dic3" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th style="width:6%">순위</th>
+                <th>종목</th>
+                <th>변경사항</th>
                 <th>이전 거래대금</th>
             </tr>
             </thead>
@@ -52,7 +92,40 @@
 
     {% block content %}
     <script type="text/javascript" >
-
+        var dataList = {{dataList|tojson}} ;
+        var timeList;debugger
+        $(function(){
+            $('#time0').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[0]
+                return false;
+            });
+            $('#time4').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[1]
+                return false;
+            });
+            $('#tiime8').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[2]
+                return false;
+            });
+            $('#time12').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[3]
+                return false;
+            });
+            $('#tim16').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[4]
+                return false;
+            });
+            $('#time20').on('click', function(e){
+                e.preventDefault()
+                timeList = dataList[5]
+                return false;
+            });
+        });
         $(document).ready( function () {
 
 			$('ul.tabs li').click(function() {
@@ -65,6 +138,7 @@
 
             $("#dic1").DataTable({
                  "data": {{ data|tojson }},
+                 "iDisplayLength": 100,
                 columns: [
                     {"data": "id"},
                     {"data": "ticker"},
@@ -89,13 +163,39 @@
                 },
             });
             $("#dic2").DataTable({
-                 "order":[[0, "desc"]],
+<!--                 "order":[[0, "desc"]],-->
                  "data": {{ top10|tojson }},
                 columns: [
                     {"data": "id"},
                     {"data": "ticker"},
                     {"data": "change"},
                     {"data": "bw"},
+                    {"data": "prevValue"}
+                ],
+                "language": {
+                    "emptyTable": "데이터가 없어요.",
+                    //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                    //"info": "현재 _START_ - _END_ / _TOTAL_건",
+                    "infoEmpty": "데이터 없음",
+                    "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                    //"search": "에서 검색: ",
+                    "zeroRecords": "일치하는 데이터가 없어요.",
+                    "loadingRecords": "로딩중...",
+                    "processing":     "잠시만 기다려 주세요...",
+                    //"paginate": {
+                    //    "next": "다음",
+                    //    "previous": "이전"
+                    //}
+                },
+            });
+
+            $("#dic3").DataTable({
+                  "iDisplayLength": 100,
+                 "data": timeList,
+                columns: [
+                    {"data": "id"},
+                    {"data": "ticker"},
+                    {"data": "change"},
                     {"data": "prevValue"}
                 ],
                 "language": {
