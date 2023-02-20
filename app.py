@@ -217,10 +217,10 @@ def scheduler():
     # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    sched.add_job(job51, 'cron', hour='23', minute='35')
-    sched.add_job(job52, 'cron', hour='23', minute='36')
-    sched.add_job(job53, 'cron', hour='23', minute='37')
-    sched.add_job(job51, 'interval', seconds=2)
+    sched.add_job(job51, 'cron', hour='0', minute='3')
+    sched.add_job(job52, 'cron', hour='0', minute='4')
+    sched.add_job(job53, 'cron', hour='0', minute='5')
+
     sched.start()
     print("scheduler start")
     return redirect( url_for('index') )
