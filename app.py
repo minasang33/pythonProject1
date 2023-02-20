@@ -217,12 +217,12 @@ def scheduler():
     # @sched.scheduled_job('cron', hour='23', minute='5', id='test_5')
 
 
-    sched.add_job(job51, 'cron', hour='0', minute='30', args=['utc'])
-    sched.add_job(job52, 'cron', hour='0', minute='31', args=['utc'])
-    sched.add_job(job53, 'cron', hour='0', minute='32', args=['utc'])
-    sched.add_job(job51, 'cron', hour='9', minute='30', args=['kor'])
-    sched.add_job(job52, 'cron', hour='9', minute='31', args=['kor'])
-    sched.add_job(job53, 'cron', hour='9', minute='32', args=['kor'])
+    sched.add_job(job51, 'cron', hour='0', minute='33', args=['utc'])
+    sched.add_job(job52, 'cron', hour='0', minute='34', args=['utc'])
+    sched.add_job(job53, 'cron', hour='0', minute='35', args=['utc'])
+    sched.add_job(job51, 'cron', hour='9', minute='33', args=['kor'])
+    sched.add_job(job52, 'cron', hour='9', minute='34', args=['kor'])
+    sched.add_job(job53, 'cron', hour='9', minute='35', args=['kor'])
 
     sched.start()
     print("scheduler start")
