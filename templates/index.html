@@ -93,36 +93,57 @@
     {% block content %}
     <script type="text/javascript" >
         var dataList = {{dataList|tojson}} ;
-        var timeList;debugger
+        var timeList;
         $(function(){
-            $('#time0').on('click', function(e){
+            $('#time0').on('click', function(e){debugger
                 e.preventDefault()
                 timeList = dataList[0]
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
                 return false;
             });
             $('#time4').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[1]
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
                 return false;
             });
             $('#tiime8').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[2]
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
                 return false;
             });
             $('#time12').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[3]
+
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
+
                 return false;
             });
             $('#tim16').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[4]
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
+
                 return false;
             });
             $('#time20').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[5]
+                var table = $("#dic3").DataTable();
+                table.clear();
+                table.rows.add(timeList).draw();
                 return false;
             });
         });

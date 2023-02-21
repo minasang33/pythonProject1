@@ -63,10 +63,14 @@ def compareList(oldList, newList):
 
                     if len(fArr) > 10:
                         top10 = fArr[0:10]
-                    print('top10', top10)
-                break
-    return result
 
+                break
+
+    for top in enumerate(top10):
+        print('top10===')
+        print(top)
+
+    return result
 
 def get_crolling():
     print('get_crolling start')
@@ -101,20 +105,16 @@ def get_crolling():
         volume['idx'] = i+1
         print(f"{i + 1}. {volume['ticker']}: {volume['volume']}")
 
-    # ticker_list = [x.text for x in top_volumes]
-    # print(ticker_list)
-
-    # newList = top_volumes[0:10]
     result = []
 
     if len(oldList) == 0:
         oldList = top_volumes
         for volume in top_volumes:
-            result.append(printListout(volume, volume['idx'], f"{volume['volume']}"))
-
+            result.append(
+                printListout(volume, volume['idx'], f"{volume['volume']}")
+            )
     else:
         result = compareList(oldList, top_volumes)
-
 
     return result
 
@@ -181,7 +181,7 @@ def scheduler():
     # 매일 8시 실행
     sched.add_job(job2, 'cron', hour='8')
     # 매일 12시 실행
-    sched.add_job(job3, 'cron', hour='12', minute='10')
+    sched.add_job(job3, 'cron', hour='12')
     # 매일 16시 실행
     sched.add_job(job4, 'cron', hour='16')
     # 매일 20시 실행
