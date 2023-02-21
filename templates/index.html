@@ -14,23 +14,22 @@
     <h1>{{ title }}</h1>
     <p align="right"> UTC : {{ time }} </p>
     <p align="right"> KST : {{ ktime }} </p>
-    <hr>
-{{dataList}}
+
     <ul class="tabs">
-        <li class="tab-link on" data-tab="menu1"><a href="#">순위 리스트</a></li>
-        <li class="tab-link" data-tab="menu2"><a href="#">변동 순위 TOP10</a></li>
-        <li class="tab-link " data-tab="menu3"><a href="#">과거 리스트</a></li>
+        <li class="tab-link on" data-tab="menu1" ><a href="#">순위 리스트</a></li>
+        <li class="tab-link " data-tab="menu2" ><a href="#">변동 순위 TOP10</a></li>
+        <li class="tab-link " data-tab="menu3" ><a href="#">과거 리스트</a></li>
     </ul>
 
-    <div id="menu1" class="tab-content on">
+    <div id="menu1" class="tab-content on ">
 
         <table id="dic1" class="display" style="width:100%">
             <thead>
             <tr>
-                <th style="width:6%"> 순위</th>
+                <th> 순위</th>
                 <th>종목</th>
                 <th>변경사항</th>
-                <th style="width:8%">상승폭</th>
+                <th>상승폭</th>
                 <th>이전 거래대금</th>
             </tr>
             </thead>
@@ -43,10 +42,10 @@
         <table id="dic2" class="display" style="width:100%">
             <thead>
             <tr>
-                <th style="width:6%">순위</th>
+                <th>순위</th>
                 <th>종목</th>
                 <th>변경사항</th>
-                <th style="width:8%">상승폭</th>
+                <th>상승폭</th>
                 <th>이전 거래대금</th>
             </tr>
             </thead>
@@ -55,21 +54,21 @@
 
     <div id="menu3" class="tab-content">
 
-        <div style="display:flex;">
-        <ul>
-            <li>
-                <button id="time0">0시 </button>
+        <div style="display:flex;float:right">
+        <ul class="time">
+            <li style="padding-right:10px">
+                <button id="time0" >0시 </button>
             </li>
-            <li>
+            <li style="padding-right:10px">
                 <button id="time4">4시 </button>
             </li>
-            <li>
+            <li style="padding-right:10px">
                 <button id="time8">8시 </button>
             </li>
-            <li>
+            <li style="padding-right:10px">
                 <button id="time12">12시 </button>
             </li>
-            <li>
+            <li style="padding-right:10px">
                 <button id="time16">16시 </button>
             </li>
             <li>
@@ -81,10 +80,9 @@
         <table id="dic3" class="display" style="width:100%">
             <thead>
             <tr>
-                <th style="width:6%">순위</th>
+                <th>순위</th>
                 <th>종목</th>
-                <th>변경사항</th>
-                <th>이전 거래대금</th>
+                <th>거래대금</th>
             </tr>
             </thead>
         </table>
@@ -95,7 +93,7 @@
         var dataList = {{dataList|tojson}} ;
         var timeList;
         $(function(){
-            $('#time0').on('click', function(e){debugger
+            $('#time0').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[0]
                 var table = $("#dic3").DataTable();
@@ -111,7 +109,7 @@
                 table.rows.add(timeList).draw();
                 return false;
             });
-            $('#tiime8').on('click', function(e){
+            $('#time8').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[2]
                 var table = $("#dic3").DataTable();
@@ -129,7 +127,7 @@
 
                 return false;
             });
-            $('#tim16').on('click', function(e){
+            $('#time16').on('click', function(e){
                 e.preventDefault()
                 timeList = dataList[4]
                 var table = $("#dic3").DataTable();
@@ -148,44 +146,130 @@
             });
         });
         $(document).ready( function () {
-
+            $('ul.time li button').click(function() {
+                $('ul.time li button').removeClass('on');
+                $(this).addClass('on');
+            });
 			$('ul.tabs li').click(function() {
 				var activeTab = $(this).attr('data-tab');
 				$('ul.tabs li').removeClass('on');
 				$('.tab-content').removeClass('on');
 				$(this).addClass('on');
 				$('#' + activeTab).addClass('on');
+
+				if(activeTab == 'menu1'){
+				    $("#dic1").DataTable({
+                          destroy: true,
+                         "data": {{ data|tojson }},
+                         "iDisplayLength": 100,
+                         columnDefs:[
+                         {width:35, targets:0},
+                         {width:100, targets:1},
+                         {width:60, targets:2},
+                         {width:45, targets:3}
+                         ],
+                        columns: [
+                            {"data": "id"},
+                            {"data": "ticker"},
+                            {"data": "change"},
+                            {"data": "bw"},
+                            {"data": "prevValue"}
+                        ],
+                        "language": {
+                            "emptyTable": "데이터가 없어요.",
+                            //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            //"info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            //"search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing":     "잠시만 기다려 주세요...",
+                            //"paginate": {
+                            //    "next": "다음",
+                            //    "previous": "이전"
+                            //}
+                        },
+                    });
+				}else if(activeTab == 'menu2'){
+                    $("#dic2").DataTable({
+                    destroy: true,
+    <!--                 "order":[[0, "desc"]],-->
+                     "data": {{ top10|tojson }},
+                     columnDefs:[
+                     {width:35, targets:0},
+                     {width:100, targets:1},
+                     {width:60, targets:2},
+                     {width:45, targets:3}
+                     ],
+                    columns: [
+                        {"data": "id"},
+                        {"data": "ticker"},
+                        {"data": "change"},
+                        {"data": "bw"},
+                        {"data": "prevValue"}
+                    ],
+                    "language": {
+                        "emptyTable": "데이터가 없어요.",
+                        //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                        //"info": "현재 _START_ - _END_ / _TOTAL_건",
+                        "infoEmpty": "데이터 없음",
+                        "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                        //"search": "에서 검색: ",
+                        "zeroRecords": "일치하는 데이터가 없어요.",
+                        "loadingRecords": "로딩중...",
+                        "processing":     "잠시만 기다려 주세요...",
+                        //"paginate": {
+                        //    "next": "다음",
+                        //    "previous": "이전"
+                        //}
+                    },
+            });
+				}else if(activeTab == 'menu3'){
+				    $("#dic3").DataTable({
+				         destroy: true,
+                         "iDisplayLength": 100,
+                         "data": timeList,
+                         columnDefs:[
+                         {width:35, targets:0},
+                         {width:100, targets:1},
+
+
+                         ],
+                        columns: [
+                            {"data": "id"},
+                            {"data": "ticker"},
+                            {"data": "prevValue"}
+                        ],
+                        "language": {
+                            "emptyTable": "데이터가 없어요.",
+                            //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+                            //"info": "현재 _START_ - _END_ / _TOTAL_건",
+                            "infoEmpty": "데이터 없음",
+                            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+                            //"search": "에서 검색: ",
+                            "zeroRecords": "일치하는 데이터가 없어요.",
+                            "loadingRecords": "로딩중...",
+                            "processing":     "잠시만 기다려 주세요...",
+                            //"paginate": {
+                            //    "next": "다음",
+                            //    "previous": "이전"
+                            //}
+                        },
+                    });
+				}
+
 			})
 
             $("#dic1").DataTable({
                  "data": {{ data|tojson }},
                  "iDisplayLength": 100,
-                columns: [
-                    {"data": "id"},
-                    {"data": "ticker"},
-                    {"data": "change"},
-                    {"data": "bw"},
-                    {"data": "prevValue"}
-                ],
-                "language": {
-                    "emptyTable": "데이터가 없어요.",
-                    //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
-                    //"info": "현재 _START_ - _END_ / _TOTAL_건",
-                    "infoEmpty": "데이터 없음",
-                    "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
-                    //"search": "에서 검색: ",
-                    "zeroRecords": "일치하는 데이터가 없어요.",
-                    "loadingRecords": "로딩중...",
-                    "processing":     "잠시만 기다려 주세요...",
-                    //"paginate": {
-                    //    "next": "다음",
-                    //    "previous": "이전"
-                    //}
-                },
-            });
-            $("#dic2").DataTable({
-<!--                 "order":[[0, "desc"]],-->
-                 "data": {{ top10|tojson }},
+                 columnDefs:[
+                 {width:35, targets:0},
+                 {width:100, targets:1},
+                 {width:60, targets:2},
+                 {width:45, targets:3}
+                 ],
                 columns: [
                     {"data": "id"},
                     {"data": "ticker"},
@@ -210,31 +294,8 @@
                 },
             });
 
-            $("#dic3").DataTable({
-                  "iDisplayLength": 100,
-                 "data": timeList,
-                columns: [
-                    {"data": "id"},
-                    {"data": "ticker"},
-                    {"data": "change"},
-                    {"data": "prevValue"}
-                ],
-                "language": {
-                    "emptyTable": "데이터가 없어요.",
-                    //"lengthMenu": "페이지당 _MENU_ 개씩 보기",
-                    //"info": "현재 _START_ - _END_ / _TOTAL_건",
-                    "infoEmpty": "데이터 없음",
-                    "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
-                    //"search": "에서 검색: ",
-                    "zeroRecords": "일치하는 데이터가 없어요.",
-                    "loadingRecords": "로딩중...",
-                    "processing":     "잠시만 기다려 주세요...",
-                    //"paginate": {
-                    //    "next": "다음",
-                    //    "previous": "이전"
-                    //}
-                },
-            });
+
+
         });
 
 
