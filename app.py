@@ -220,25 +220,25 @@ def scheduler():
 
     sched.remove_all_jobs()
 
-    # # 매일 0시 실행
-    # sched.add_job(job0, 'cron', hour='0')
-    # # 매일 4시 실행
-    # sched.add_job(job1, 'cron', hour='4')
-    # # 매일 8시 실행
-    # sched.add_job(job2, 'cron', hour='8')
-    # # 매일 12시 실행
-    # sched.add_job(job3, 'cron', hour='12')
-    # # 매일 16시 실행
-    # sched.add_job(job4, 'cron', hour='16')
-    # # 매일 20시 실행
-    # sched.add_job(job5, 'cron', hour='20')
+    # 매일 0시 실행
+    sched.add_job(job0, 'cron', hour='0')
+    # 매일 4시 실행
+    sched.add_job(job1, 'cron', hour='4')
+    # 매일 8시 실행
+    sched.add_job(job2, 'cron', hour='8')
+    # 매일 12시 실행
+    sched.add_job(job3, 'cron', hour='12')
+    # 매일 16시 실행
+    sched.add_job(job4, 'cron', hour='16')
+    # 매일 20시 실행
+    sched.add_job(job5, 'cron', hour='20')
 
-    sched.add_job(job0, 'cron', hour='15')
-    sched.add_job(job1, 'cron', hour='15', minute='10')
-    sched.add_job(job2, 'cron', hour='15', minute='20')
-    sched.add_job(job3, 'cron', hour='15', minute='30')
-    sched.add_job(job4, 'cron', hour='15', minute='40')
-    sched.add_job(job5, 'cron', hour='15', minute='50')
+    # sched.add_job(job0, 'cron', hour='15')
+    # sched.add_job(job1, 'cron', hour='15', minute='10')
+    # sched.add_job(job2, 'cron', hour='15', minute='20')
+    # sched.add_job(job3, 'cron', hour='15', minute='30')
+    # sched.add_job(job4, 'cron', hour='15', minute='40')
+    # sched.add_job(job5, 'cron', hour='15', minute='50')
 
     sched.start()
     print("scheduler start")
