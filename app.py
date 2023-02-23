@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 import time
-import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, redirect, url_for  # Flask 라이브러리 선언
 app = Flask(__name__)
 
 import requests
 
-url ="https://coinmarketcap.com/exchanges/upbit/"
+# url ="https://coinmarketcap.com/exchanges/upbit/"
 
 
 timeList1 = []
@@ -17,7 +16,13 @@ timeList4 = []
 timeList5 = []
 timeList6 = []
 
-top20 = []
+# m1 = '30'
+# m2 = '31'
+# m3 = '32'
+# m4 = '33'
+# m5 = '34'
+# m6 = '35'
+
 #억단위로 표기
 def get_wonwha_string(num_wonwha_amout):
     """ 입력된 원화를 4자리단위 한글로 변환한다 """
@@ -59,7 +64,7 @@ def printListout(copyArr, preCnt, prevValue):
 
     pList = {
         "id": copyArr['idx'],
-        "ticker": copyArr['ticker'],
+        "korean_name": copyArr['korean_name'],
         "change": str(preCnt)+"->"+str(copyArr['idx']),
         "value": copyArr['volume'],
         "prevValue": prevValue,
@@ -70,15 +75,22 @@ def printListout(copyArr, preCnt, prevValue):
 
 def compareList(oldList, newList):
     result = []
+    count = 0
+    print('cnt', len(oldList), len(newList))
     for i, n in enumerate(newList):
         for j, o in enumerate(oldList):
-            if n['ticker'] == o['ticker']: #ticker 가 같은지 비교
+            if n['korean_name'] == o['korean_name']: #ticker 가 같은지 비교
                 arr = printListout(n, o['id'], o['prevValue'])
                 result.append(arr)
+                count += 1
+                break
+    print('count', count)
     return result
 
 def get_crolling():
+    global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
     print('get_crolling start')
+
     oldList = []
     today = convert_kst(datetime.now())
     t = today.hour
@@ -95,6 +107,27 @@ def get_crolling():
         oldList = timeList1
     else:
         oldList = timeList6
+    # m = today.minute
+    # print(m)
+
+    # if str(m) == m1:
+    #     print('m1', len(timeList6))
+    #     oldList = timeList6
+    # elif str(m) == m2:
+    #     print('m2', len(timeList1))
+    #     oldList = timeList1
+    # elif str(m) == m3:
+    #     print('m3', len(timeList2))
+    #     oldList = timeList2
+    # elif str(m) == m4:
+    #     print('m4', len(timeList3))
+    #     oldList = timeList3
+    # elif str(m) == m5:
+    #     print('m5', len(timeList4))
+    #     oldList = timeList4
+    # elif str(m) == m6:
+    #     print('m6', len(timeList5))
+    #     oldList = timeList5
     print("oldList=============================")
     print(oldList)
 
@@ -120,14 +153,20 @@ def get_crolling():
     for i, ticker in enumerate(tickers, start=1):
         for ticker_data in tickers_data:
             if ticker_data['market'].startswith(f'KRW-{ticker}'):
-                volumes.append({'ticker': ticker, 'volume': float(ticker_data['acc_trade_price'])})
+                ret = next((item for item in markets if item['market'] == ticker_data['market']), None)
+                volumes.append({'ticker': ticker_data['market'],
+                                'korean_name': ret['korean_name'],
+                                'volume': float(ticker_data['acc_trade_price'])
+                                })
+                print(ticker_data['market'])
+                break
 
     top_volumes = sorted(volumes, key=lambda x: x['volume'], reverse=True)
 
     for i, volume in enumerate(top_volumes):
         volume['idx'] = i+1
         volume['volume'] = get_wonwha_string(volume['volume'])
-        print(f"{i + 1}. {volume['ticker']}: {volume['volume']}")
+        print(f"{i + 1}. {volume['korean_name']}: {volume['volume']}")
 
     result = []
 
@@ -142,80 +181,40 @@ def get_crolling():
 
     return result
 
-def findData(data):
-    global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
-    today = convert_kst(datetime.now())
-    t = today.hour
-    print("hour:", t)
-    if 20 <= t:
-        timeList6 = data
-    elif 16 <= t:
-        timeList5 = data
-    elif 12 <= t:
-        timeList4 = data
-    elif 8 <= t:
-        timeList3 = data
-    elif 4 <= t:
-        timeList2 = data
-    else:
-        timeList1 = data
-
-def getTop20(oldList, newList):
-    result = []
-    for i, n in enumerate(newList):
-        for j, o in enumerate(oldList):
-            if n['ticker'] == o['ticker']:  # ticker 가 같은지 비교
-                arr = {
-                    "id": n['id'],
-                    "ticker": n['ticker'],
-                    "change": str(j)+"->"+str(n['id']),
-                    "value": n['value'],
-                    "prevValue": o['value'],
-                    "bw": j - n['id']
-                }
-                result.append(arr)
-    return result
-
 def job0():
-    global timeList1, top20
+    global timeList1
     timeList1 = get_crolling()
-    top20 = getTop20(timeList6, timeList1)
     print(f'job0 : {time.strftime("%H:%M:%S")}')
-    print(timeList1)
+    print(len(timeList1))
 def job1():
-    global timeList2, top20
+    global timeList2
     timeList2 = get_crolling()
-    top20 = getTop20(timeList6, timeList1)
     print(f'job1 : {time.strftime("%H:%M:%S")}')
-    print(timeList2)
+    print(len(timeList2))
 def job2():
-    global timeList3, top20
+    global timeList3
     timeList3 = get_crolling()
-    top20 = getTop20(timeList2, timeList3)
     print(f'job2 : {time.strftime("%H:%M:%S")}')
-    print(timeList3)
+    print(len(timeList3))
 def job3():
-    global timeList4, top20
+    global timeList4
     timeList4 = get_crolling()
-    top20 = getTop20(timeList3, timeList4)
     print(f'job3 : {time.strftime("%H:%M:%S")}')
-    print(timeList4)
+    print(len(timeList4))
 def job4():
-    global timeList5, top20
+    global timeList5
     timeList5 = get_crolling()
-    top20 = getTop20(timeList4, timeList5)
     print(f'job4 : {time.strftime("%H:%M:%S")}')
-    print(timeList5)
+    print(len(timeList5))
 def job5():
-    global timeList6, top20
+    global timeList6
     timeList6 = get_crolling()
-    top20 = getTop20(timeList5, timeList6)
     print(f'job5 : {time.strftime("%H:%M:%S")}')
-    print(timeList6)
+    print(len(timeList6))
 @app.route('/scheduler')
 def scheduler():
     print("scheduler start")
-    global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
+
     sched = BackgroundScheduler(timezone='Asia/Seoul')
 
     sched.remove_all_jobs()
@@ -233,12 +232,12 @@ def scheduler():
     # 매일 20시 실행
     sched.add_job(job5, 'cron', hour='20')
 
-    # sched.add_job(job0, 'cron', hour='15')
-    # sched.add_job(job1, 'cron', hour='15', minute='10')
-    # sched.add_job(job2, 'cron', hour='15', minute='20')
-    # sched.add_job(job3, 'cron', hour='15', minute='30')
-    # sched.add_job(job4, 'cron', hour='15', minute='40')
-    # sched.add_job(job5, 'cron', hour='15', minute='50')
+    # sched.add_job(job0, 'cron', hour='14', minute=m1)
+    # sched.add_job(job1, 'cron', hour='14', minute=m2)
+    # sched.add_job(job2, 'cron', hour='14', minute=m3)
+    # sched.add_job(job3, 'cron', hour='14', minute=m4)
+    # sched.add_job(job4, 'cron', hour='14', minute=m5)
+    # sched.add_job(job5, 'cron', hour='14', minute=m6)
 
     sched.start()
     print("scheduler start")
@@ -246,8 +245,7 @@ def scheduler():
 
 @app.route('/') # 접속하는 url
 def index():
-
-    global top20, timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
+    global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
     dataList = []
     dataList.append(timeList1)
     dataList.append(timeList2)
@@ -260,7 +258,6 @@ def index():
                            ktime=convert_kst(datetime.now()),
                            time=datetime.now(),
                            data=get_crolling(),
-                           # top10=top20,
                            dataList=dataList)
 
 if __name__ == '__main__':
