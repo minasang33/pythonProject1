@@ -16,12 +16,12 @@ timeList4 = []
 timeList5 = []
 timeList6 = []
 
-# m1 = '30'
-# m2 = '31'
-# m3 = '32'
-# m4 = '33'
-# m5 = '34'
-# m6 = '35'
+# m1 = '45'
+# m2 = '46'
+# m3 = '47'
+# m4 = '48'
+# m5 = '49'
+# m6 = '50'
 
 #억단위로 표기
 def get_wonwha_string(num_wonwha_amout):
@@ -61,12 +61,14 @@ def convert_kst(dt_tm_utc):
 
 #스케줄 실행 코드
 def printListout(copyArr, preCnt, prevValue):
-
+    diffValue = int(copyArr['volume'] - float(prevValue))
     pList = {
         "id": copyArr['idx'],
         "korean_name": copyArr['korean_name'],
         "change": str(preCnt)+"->"+str(copyArr['idx']),
         "value": copyArr['volume'],
+        "valueStr": get_wonwha_string(copyArr['volume']),
+        "diffValueStr": get_wonwha_string(diffValue),
         "prevValue": prevValue,
         "bw": preCnt - copyArr['idx']
     }
@@ -109,7 +111,7 @@ def get_crolling():
         oldList = timeList6
     # m = today.minute
     # print(m)
-
+    #
     # if str(m) == m1:
     #     print('m1', len(timeList6))
     #     oldList = timeList6
@@ -128,8 +130,8 @@ def get_crolling():
     # elif str(m) == m6:
     #     print('m6', len(timeList5))
     #     oldList = timeList5
-    print("oldList=============================")
-    print(oldList)
+    # print("oldList=============================")
+    # print(oldList)
 
     url1 = "https://api.upbit.com/v1/market/all"
     response = requests.get(url1)
@@ -165,7 +167,7 @@ def get_crolling():
 
     for i, volume in enumerate(top_volumes):
         volume['idx'] = i+1
-        volume['volume'] = get_wonwha_string(volume['volume'])
+        volume['volume'] = volume['volume']
         print(f"{i + 1}. {volume['korean_name']}: {volume['volume']}")
 
     result = []
@@ -232,12 +234,12 @@ def scheduler():
     # 매일 20시 실행
     sched.add_job(job5, 'cron', hour='20')
 
-    # sched.add_job(job0, 'cron', hour='14', minute=m1)
-    # sched.add_job(job1, 'cron', hour='14', minute=m2)
-    # sched.add_job(job2, 'cron', hour='14', minute=m3)
-    # sched.add_job(job3, 'cron', hour='14', minute=m4)
-    # sched.add_job(job4, 'cron', hour='14', minute=m5)
-    # sched.add_job(job5, 'cron', hour='14', minute=m6)
+    # sched.add_job(job0, 'cron', hour='16', minute=m1)
+    # sched.add_job(job1, 'cron', hour='16', minute=m2)
+    # sched.add_job(job2, 'cron', hour='16', minute=m3)
+    # sched.add_job(job3, 'cron', hour='17', minute=m4)
+    # sched.add_job(job4, 'cron', hour='17', minute=m5)
+    # sched.add_job(job5, 'cron', hour='17', minute=m6)
 
     sched.start()
     print("scheduler start")
