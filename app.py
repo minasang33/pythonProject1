@@ -158,7 +158,7 @@ def get_crolling():
                 ret = next((item for item in markets if item['market'] == ticker_data['market']), None)
                 volumes.append({'ticker': ticker_data['market'],
                                 'korean_name': ret['korean_name'],
-                                'volume': float(ticker_data['acc_trade_price'])
+                                'volume': float(ticker_data['acc_trade_price_24h'])
                                 })
                 print(ticker_data['market'])
                 break
