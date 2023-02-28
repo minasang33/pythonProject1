@@ -30,10 +30,10 @@
                 <th>종목</th>
                 <th>변경사항</th>
                 <th>상승폭</th>
-                <th>거래</th>
                 <th>거래대금(억원)</th>
-                <th>변동</th>
+                <th>거래</th>
                 <th>변동금액(억원)</th>
+                <th>변동</th>
             </tr>
             </thead>
         </table>
@@ -54,43 +54,44 @@
 <!--            </thead>-->
 <!--        </table>-->
 <!--    </div>-->
-
-    <div id="menu3" class="tab-content">
-
-        <div style="display:flex;float:right">
+<div style="display:flex;float:right">
         <ul class="time">
             <li style="padding-right:10px">
-                <button id="time0" >0시 </button>
+                <button id="time0" class="timeBtn">18시 </button>
             </li>
             <li style="padding-right:10px">
-                <button id="time4">4시 </button>
+                <button id="time4" class="timeBtn">19시 </button>
             </li>
             <li style="padding-right:10px">
-                <button id="time8">8시 </button>
+                <button id="time8" class="timeBtn">20시 </button>
             </li>
             <li style="padding-right:10px">
-                <button id="time12">12시 </button>
+                <button id="time12" class="timeBtn">21시 </button>
             </li>
             <li style="padding-right:10px">
-                <button id="time16">16시 </button>
+                <button id="time16" class="timeBtn">22시 </button>
             </li>
             <li>
-                <button id="time20">20시 </button>
+                <button id="time20" class="timeBtn">23시 </button>
             </li>
         </ul>
         </div>
+    <div id="menu3" class="tab-content">
+
+
 <!--        <p> This is menu2 content</p>-->
         <table id="dic3" class="display" style="width:100%">
+
             <thead>
             <tr>
                 <th>순위</th>
                 <th>종목</th>
                 <th>변경사항</th>
                 <th>상승폭</th>
-                <th>거래</th>
                 <th>거래대금(억원)</th>
-                <th>변동</th>
+                <th>거래</th>
                 <th>변동금액(억원)</th>
+                <th>변동</th>
             </tr>
             </thead>
         </table>
@@ -175,19 +176,20 @@
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:35, targets:4},
-                         {width:60, targets:5},
-                         {width:35, targets:6}
+                         {width:60, targets:4},
+                         {width:35, targets:5},
+                         {width:60, targets:6},
+                         {width:35, targets:7}
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr"},
                             {"data": "valueStr2"},
-                            {"data": "diffValueStr"},
-                            {"data": "diffValueStr2"}
+                            {"data": "valueStr"},
+                            {"data": "diffValueStr2"},
+                            {"data": "diffValueStr"}
                         ],
                         "language": {
                             "emptyTable": "데이터가 없어요.",
@@ -215,19 +217,20 @@
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:35, targets:4},
-                         {width:60, targets:5},
-                         {width:35, targets:6}
+                         {width:60, targets:4},
+                         {width:35, targets:5},
+                         {width:60, targets:6},
+                         {width:35, targets:7}
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr"},
                             {"data": "valueStr2"},
-                            {"data": "diffValueStr"},
+                            {"data": "valueStr"},
                             {"data": "diffValueStr2"},
+                            {"data": "diffValueStr"},
 
                         ],
                         "language": {
@@ -258,19 +261,20 @@
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:35, targets:4},
-                         {width:60, targets:5},
-                         {width:35, targets:6}
+                         {width:60, targets:4},
+                         {width:35, targets:5},
+                         {width:60, targets:6},
+                         {width:35, targets:7}
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr"},
                             {"data": "valueStr2"},
-                            {"data": "diffValueStr"},
-                            {"data": "diffValueStr2"}
+                            {"data": "valueStr"},
+                            {"data": "diffValueStr2"},
+                            {"data": "diffValueStr"}
                         ],
                 "language": {
                     "emptyTable": "데이터가 없어요.",

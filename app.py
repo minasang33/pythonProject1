@@ -99,15 +99,27 @@ def get_crolling():
     today = convert_kst(datetime.now())
     t = today.hour
     print("hour:", t)
-    if 20 <= t-4:
+    # if 20 <= t-4:
+    #     oldList = timeList5
+    # elif 16 <= t-4:
+    #     oldList = timeList4
+    # elif 12 <= t-4:
+    #     oldList = timeList3
+    # elif 8 <= t-4:
+    #     oldList = timeList2
+    # elif 4 <= t-4:
+    #     oldList = timeList1
+    # else:
+    #     oldList = timeList6
+    if 23 <= t-1:
         oldList = timeList5
-    elif 16 <= t-4:
+    elif 22 <= t-1:
         oldList = timeList4
-    elif 12 <= t-4:
+    elif 21 <= t-1:
         oldList = timeList3
-    elif 8 <= t-4:
+    elif 20 <= t-1:
         oldList = timeList2
-    elif 4 <= t-4:
+    elif 19 <= t-1:
         oldList = timeList1
     else:
         oldList = timeList6
@@ -224,17 +236,29 @@ def scheduler():
     sched.remove_all_jobs()
 
     # 매일 0시 실행
-    sched.add_job(job0, 'cron', hour='0')
+    # sched.add_job(job0, 'cron', hour='0')
+    # # 매일 4시 실행
+    # sched.add_job(job1, 'cron', hour='4')
+    # # 매일 8시 실행
+    # sched.add_job(job2, 'cron', hour='8')
+    # # 매일 12시 실행
+    # sched.add_job(job3, 'cron', hour='12')
+    # # 매일 16시 실행
+    # sched.add_job(job4, 'cron', hour='16')
+    # # 매일 20시 실행
+    # sched.add_job(job5, 'cron', hour='20')
+
+    sched.add_job(job0, 'cron', hour='18')
     # 매일 4시 실행
-    sched.add_job(job1, 'cron', hour='4')
+    sched.add_job(job1, 'cron', hour='19')
     # 매일 8시 실행
-    sched.add_job(job2, 'cron', hour='8')
+    sched.add_job(job2, 'cron', hour='20')
     # 매일 12시 실행
-    sched.add_job(job3, 'cron', hour='12')
+    sched.add_job(job3, 'cron', hour='21')
     # 매일 16시 실행
-    sched.add_job(job4, 'cron', hour='16')
+    sched.add_job(job4, 'cron', hour='22')
     # 매일 20시 실행
-    sched.add_job(job5, 'cron', hour='20')
+    sched.add_job(job5, 'cron', hour='23')
 
     # sched.add_job(job0, 'cron', hour='16', minute=m1)
     # sched.add_job(job1, 'cron', hour='16', minute=m2)

@@ -48,3 +48,6 @@ ul.time li button.on{
     overflow: hidden;
     white-space: nowrap;
 }
+.timeBtn{
+    padding: 8px 25px;
+}
