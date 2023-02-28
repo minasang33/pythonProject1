@@ -61,14 +61,16 @@ def convert_kst(dt_tm_utc):
 
 #스케줄 실행 코드
 def printListout(copyArr, preCnt, prevValue):
-    diffValue = int(copyArr['volume'] - float(prevValue))
+    diffValue = copyArr['volume'] - float(prevValue)
     pList = {
         "id": copyArr['idx'],
         "korean_name": copyArr['korean_name'],
         "change": str(preCnt)+"->"+str(copyArr['idx']),
         "value": copyArr['volume'],
-        "valueStr": get_wonwha_string(copyArr['volume']),
-        "diffValueStr": get_wonwha_string(diffValue),
+        "valueStr": copyArr['volume'],
+        "valueStr2": get_wonwha_string(copyArr['volume']),
+        "diffValueStr": diffValue,
+        "diffValueStr2": get_wonwha_string(diffValue),
         "prevValue": prevValue,
         "bw": preCnt - copyArr['idx']
     }

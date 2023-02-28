@@ -38,3 +38,13 @@ ul.time li button.on{
 
 }
 
+.dataTable{
+    width:100%;
+    table-layout: fixed;
+}
+.dataTable tbody td {
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
