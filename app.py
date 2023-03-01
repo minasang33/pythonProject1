@@ -91,27 +91,7 @@ def compareList(oldList, newList):
     print('count', count)
     return result
 
-def get_crolling():
-    global timeList1, timeList2, timeList3, timeList4, timeList5, timeList6
-    print('get_crolling start')
-
-    oldList = []
-    today = convert_kst(datetime.now())
-    t = today.hour
-    print("hour:", t)
-    if 20 <= t-4:
-        oldList = timeList5
-    elif 16 <= t-4:
-        oldList = timeList4
-    elif 12 <= t-4:
-        oldList = timeList3
-    elif 8 <= t-4:
-        oldList = timeList2
-    elif 4 <= t-4:
-        oldList = timeList1
-    else:
-        oldList = timeList6
-
+def get_crolling(oldList):
     # m = today.minute
     # print(m)
     #
@@ -187,33 +167,33 @@ def get_crolling():
     return result
 
 def job0():
-    global timeList1
-    timeList1 = get_crolling()
+    global timeList1, timeList6
+    timeList1 = get_crolling(timeList6)
     print(f'job0 : {time.strftime("%H:%M:%S")}')
     print(len(timeList1))
 def job1():
-    global timeList2
-    timeList2 = get_crolling()
+    global timeList2, timeList1
+    timeList2 = get_crolling(timeList1)
     print(f'job1 : {time.strftime("%H:%M:%S")}')
     print(len(timeList2))
 def job2():
-    global timeList3
-    timeList3 = get_crolling()
+    global timeList3, timeList2
+    timeList3 = get_crolling(timeList2)
     print(f'job2 : {time.strftime("%H:%M:%S")}')
     print(len(timeList3))
 def job3():
-    global timeList4
-    timeList4 = get_crolling()
+    global timeList4, timeList3
+    timeList4 = get_crolling(timeList3)
     print(f'job3 : {time.strftime("%H:%M:%S")}')
     print(len(timeList4))
 def job4():
-    global timeList5
-    timeList5 = get_crolling()
+    global timeList5, timeList4
+    timeList5 = get_crolling(timeList4)
     print(f'job4 : {time.strftime("%H:%M:%S")}')
     print(len(timeList5))
 def job5():
-    global timeList6
-    timeList6 = get_crolling()
+    global timeList6, timeList5
+    timeList6 = get_crolling(timeList5)
     print(f'job5 : {time.strftime("%H:%M:%S")}')
     print(len(timeList6))
 @app.route('/scheduler')
@@ -260,11 +240,28 @@ def index():
     dataList.append(timeList4)
     dataList.append(timeList5)
     dataList.append(timeList6)
+
+    oldList = []
+    today = convert_kst(datetime.now())
+    t = today.hour
+    print("hour:", t)
+    if 20 <= t - 4:
+        oldList = timeList5
+    elif 16 <= t - 4:
+        oldList = timeList4
+    elif 12 <= t - 4:
+        oldList = timeList3
+    elif 8 <= t - 4:
+        oldList = timeList2
+    elif 4 <= t - 4:
+        oldList = timeList1
+    else:
+        oldList = timeList6
     return render_template('index.html',
                            title="bitfind23",
                            ktime=convert_kst(datetime.now()),
                            time=datetime.now(),
-                           data=get_crolling(),
+                           data=get_crolling(oldList),
                            dataList=dataList)
 
 if __name__ == '__main__':
