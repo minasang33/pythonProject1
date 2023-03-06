@@ -80,8 +80,12 @@ def printListout(copyArr, preCnt, prevValue):
         "diffValueStr": get_wonwha_string(diffValue),
         "prevValue": prevValue,
         "bw": preCnt - copyArr['idx'],
-        "volumePrice": get_wonwha_string(copyArr['volumePrice'])
     }
+    try:
+        pList.update({"volumePrice": get_wonwha_string(copyArr['volumePrice'])})
+    except KeyError:
+        print('keyError')
+    print(pList)
     return pList
 
 
