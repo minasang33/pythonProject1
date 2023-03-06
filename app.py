@@ -1,8 +1,14 @@
-from datetime import datetime, timedelta
+import datetime
+from datetime import timedelta
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, redirect, url_for  # Flask 라이브러리 선언
 app = Flask(__name__)
+
+import pandas as pd
+pd.set_option('display.max_columns', None) ## 모든 열을 출력한다.
+
+from pyupbit.request_api import _call_public_api
 
 import requests
 
@@ -36,18 +42,18 @@ def get_wonwha_string(num_wonwha_amout):
         str_sign = "-"  # 음의 부호(Negative Sign)를 붙이고
         num_change = abs(num_change)  # 절대값으로 변환 후 변환을 계속한다
 
-    if num_change >= 100000000:  # 1억 이상
-        str_result += f"{int(num_change // 100000000):,}억"
-        num_change = num_change % 100000000
-    elif num_change >= 10000:  # 1만 이상
-        str_result += f" {int(num_change // 10000):,}만"
-        num_change = num_change % 10000
-    elif num_change >= 1:  # 1 이상
-        str_result += f" {int(num_change):,}"
+    if num_change >= 1000000:  # 1백만 이상
+        str_result += f"{int(num_change // 1000000)}"
+        # num_change = num_change % 1000000
+    # elif num_change >= 10000:  # 1만 이상
+    #     str_result += f" {int(num_change // 10000):,}만"
+    #     num_change = num_change % 10000
+    # elif num_change >= 1:  # 1 이상
+    #     str_result += f" {int(num_change):,}"
 
     str_result = str_result.strip()  # Return a copy of the string with the leading and trailing characters removed
     if len(str_result) >= 1:
-        return str_sign + str_result + "원"
+        return str_sign + str_result
     else:
         return str_result
 
@@ -64,15 +70,17 @@ def printListout(copyArr, preCnt, prevValue):
     diffValue = copyArr['volume'] - float(prevValue)
     pList = {
         "id": copyArr['idx'],
+        "ticker": copyArr['ticker'],
         "korean_name": copyArr['korean_name'],
         "change": str(preCnt)+"->"+str(copyArr['idx']),
         "value": copyArr['volume'],
-        "valueStr": copyArr['volume'],
-        "valueStr2": get_wonwha_string(copyArr['volume']),
-        "diffValueStr": diffValue,
-        "diffValueStr2": get_wonwha_string(diffValue),
+        # "valueStr": copyArr['volume'],
+        "valueStr": get_wonwha_string(copyArr['volume']),
+        # "diffValueStr": diffValue,
+        "diffValueStr": get_wonwha_string(diffValue),
         "prevValue": prevValue,
-        "bw": preCnt - copyArr['idx']
+        "bw": preCnt - copyArr['idx'],
+        "volumePrice": get_wonwha_string(copyArr['volumePrice'])
     }
     return pList
 
@@ -91,7 +99,7 @@ def compareList(oldList, newList):
     print('count', count)
     return result
 
-def get_crolling(oldList):
+def get_crolling(oldList, type='Scheduler'):
     # m = today.minute
     # print(m)
     #
@@ -164,8 +172,89 @@ def get_crolling(oldList):
     else:
         result = compareList(oldList, top_volumes)
 
+    if(type == 'RealTime'):
+        for item in result:
+            df = get_ohlcv(item['ticker'])
+            if len(df) != 0:
+                print(df)
+                value = df['volumePrice'][0]
+                item["volumePrice"] = f"{value}"
+                print(item)
+
     return result
 
+
+def get_tickers(fiat="KRW", limit_info=False):
+    """
+    마켓 코드 조회 (업비트에서 거래 가능한 마켓 목록 조회)
+    :param fiat: "ALL", "KRW", "BTC", "USDT"
+    :param limit_info: 요청수 제한 리턴
+    :return:
+    """
+    try:
+        url = "https://api.upbit.com/v1/market/all"
+
+        # call REST API
+        ret = _call_public_api(url)
+        if isinstance(ret, tuple):
+            contents, req_limit_info = ret
+        else:
+            contents = None
+            req_limit_info = None
+
+        tickers = None
+        if isinstance(contents, list):
+            markets = [x['market'] for x in contents]
+
+            if fiat != "ALL":
+                tickers = [x for x in markets if x.startswith(fiat)]
+            else:
+                tickers = markets
+
+        if limit_info is False:
+            return tickers
+        else:
+            return tickers, req_limit_info
+
+    except Exception as x:
+        print(x.__class__.__name__)
+        return None
+
+
+def get_ohlcv(ticker, count=1, to=None):
+    """
+    캔들 조회
+    :return:
+    """
+    try:
+        url = "https://api.upbit.com/v1/candles/minutes/240"
+
+        if to == None:
+            to = datetime.datetime.now()
+        elif isinstance(to, str):
+            to = pd.to_datetime(to).to_pydatetime()
+        elif isinstance(to, pd._libs.tslibs.timestamps.Timestamp):
+            to = to.to_pydatetime()
+
+        if to.tzinfo is None:
+            to = to.astimezone()
+        to = to.astimezone(datetime.timezone.utc)
+        to = to.strftime("%Y-%m-%d %H:%M:%S")
+
+        contents = _call_public_api(url, market=ticker, count=count, to=to)[0]
+        dt_list = [datetime.datetime.strptime(x['candle_date_time_kst'], "%Y-%m-%dT%H:%M:%S") for x in contents]
+        df = pd.DataFrame(contents, columns=['market','opening_price', 'high_price', 'low_price', 'trade_price',
+                                             'candle_acc_trade_price',
+                                             'candle_acc_trade_volume'],
+                          index=dt_list)
+        df = df.rename(
+            columns={"market":"market", "opening_price": "open", "high_price": "high", "low_price": "low", "trade_price": "close",
+                     "candle_acc_trade_price": "volumePrice",
+                     "candle_acc_trade_volume": "volume"})
+        return df.sort_index()
+    except Exception as x:
+        print(x.__class__.__name__)
+        return []
 def job0():
     global timeList1, timeList6
     timeList1 = get_crolling(timeList6)
@@ -204,19 +293,18 @@ def scheduler():
 
     sched.remove_all_jobs()
 
-    #매일 0시 실행
-    sched.add_job(job0, 'cron', hour='0')
-    # 매일 4시 실행
-    sched.add_job(job1, 'cron', hour='4')
-    # 매일 8시 실행
-    sched.add_job(job2, 'cron', hour='8')
-    # 매일 12시 실행
-    sched.add_job(job3, 'cron', hour='12')
     # 매일 16시 실행
-    sched.add_job(job4, 'cron', hour='16')
+    sched.add_job(job0, 'cron', hour='1')
     # 매일 20시 실행
-    sched.add_job(job5, 'cron', hour='20')
-
+    sched.add_job(job1, 'cron', hour='5')
+    #매일 0시 실행
+    sched.add_job(job2, 'cron', hour='9')
+    # 매일 4시 실행
+    sched.add_job(job3, 'cron', hour='13')
+    # 매일 8시 실행
+    sched.add_job(job4, 'cron', hour='17')
+    # 매일 12시 실행
+    sched.add_job(job5, 'cron', hour='21')
 
 
     # sched.add_job(job0, 'cron', hour='16', minute=m1)
@@ -242,27 +330,28 @@ def index():
     dataList.append(timeList6)
 
     oldList = []
-    today = convert_kst(datetime.now())
+    today = convert_kst(datetime.datetime.now())
     t = today.hour
     print("hour:", t)
-    if 20 <= t - 4:
+
+    if 21 <= t:
         oldList = timeList5
-    elif 16 <= t - 4:
+    elif 17 <= t:
         oldList = timeList4
-    elif 12 <= t - 4:
+    elif 13 <= t:
         oldList = timeList3
-    elif 8 <= t - 4:
+    elif 9 <= t:
         oldList = timeList2
-    elif 4 <= t - 4:
+    elif 5 <= t:
         oldList = timeList1
     else:
         oldList = timeList6
     return render_template('index.html',
                            title="bitfind23",
-                           ktime=convert_kst(datetime.now()),
-                           time=datetime.now(),
-                           data=get_crolling(oldList),
+                           ktime=convert_kst(datetime.datetime.now()),
+                           time=datetime.datetime.now(),
+                           data=get_crolling(oldList, type="RealTime"),
                            dataList=dataList)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port='8080')

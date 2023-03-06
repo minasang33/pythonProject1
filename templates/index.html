@@ -30,10 +30,8 @@
                 <th>종목</th>
                 <th>변경사항</th>
                 <th>상승폭</th>
-                <th>거래대금(억원)</th>
-                <th>거래</th>
-                <th>변동금액(억원)</th>
-                <th>변동</th>
+                <th>거래대금(백만)</th>
+                <th>변동금액(백만)</th>
             </tr>
             </thead>
         </table>
@@ -54,32 +52,46 @@
 <!--            </thead>-->
 <!--        </table>-->
 <!--    </div>-->
-<div style="display:flex;float:right">
-        <ul class="time">
-            <li style="padding-right:10px">
-                <button id="time0" class="timeBtn">0시 </button>
-            </li>
-            <li style="padding-right:10px">
-                <button id="time4" class="timeBtn">4시 </button>
-            </li>
-            <li style="padding-right:10px">
-                <button id="time8" class="timeBtn">8시 </button>
-            </li>
-            <li style="padding-right:10px">
-                <button id="time12" class="timeBtn">12시 </button>
-            </li>
-            <li style="padding-right:10px">
-                <button id="time16" class="timeBtn">16시 </button>
-            </li>
-            <li>
-                <button id="time20" class="timeBtn">20시 </button>
-            </li>
-        </ul>
-        </div>
+
     <div id="menu3" class="tab-content">
-
-
 <!--        <p> This is menu2 content</p>-->
+        <div class="row">
+            <ul class="time" style="float:right">
+                <li style="padding-right:10px">
+                    <button id="time0" class="timeBtn">0시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time2" class="timeBtn">2시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time4" class="timeBtn">4시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time6" class="timeBtn">6시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time8" class="timeBtn">8시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time12" class="timeBtn">12시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time14" class="timeBtn">14시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time16" class="timeBtn">16시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time18" class="timeBtn">18시 </button>
+                </li>
+                <li style="padding-right:10px">
+                    <button id="time20" class="timeBtn">20시 </button>
+                </li>
+                <li>
+                    <button id="time22" class="timeBtn">22시 </button>
+                </li>
+            </ul>
+        </div>
         <table id="dic3" class="display" style="width:100%">
 
             <thead>
@@ -88,16 +100,16 @@
                 <th>종목</th>
                 <th>변경사항</th>
                 <th>상승폭</th>
-                <th>거래대금(억원)</th>
-                <th>거래</th>
-                <th>변동금액(억원)</th>
-                <th>변동</th>
+                <th>거래대금(백만)</th>
+                <th>변동금액(백만)</th>
+                <th>240분봉 거래대금(백만)</th>
             </tr>
             </thead>
         </table>
     </div>
 
     {% block content %}
+    {% endblock %}
     <script type="text/javascript" >
         var dataList = {{dataList|tojson}} ;
         var timeList;
@@ -170,25 +182,21 @@
 				    $("#dic1").DataTable({
                           destroy: true,
                          "data": {{ data|tojson }},
-                         "iDisplayLength": 100,
+                         "aLengthMenu": [ [100, 150, 200, -1], [100, 150, 200, "All"] ],
+                         "iDisplayLength": 150,
                          columnDefs:[
                          {width:35, targets:0},
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:60, targets:4},
-                         {width:35, targets:5},
-                         {width:60, targets:6},
-                         {width:35, targets:7}
+                         {width:100, target:4},
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr2"},
                             {"data": "valueStr"},
-                            {"data": "diffValueStr2"},
                             {"data": "diffValueStr"}
                         ],
                         "language": {
@@ -210,27 +218,25 @@
 				}else if(activeTab == 'menu3'){
 				    $("#dic3").DataTable({
 				         destroy: true,
-                         "iDisplayLength": 100,
+				         "aLengthMenu": [ [100, 150, 200, -1], [100, 150, 200, "All"] ],
+                         "iDisplayLength": 150,
                          "data": timeList,
                          columnDefs:[
                          {width:35, targets:0},
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:60, targets:4},
-                         {width:35, targets:5},
-                         {width:60, targets:6},
-                         {width:35, targets:7}
+                         {width:100, targets:4},
+                         {width:100, targets:5},
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr2"},
                             {"data": "valueStr"},
-                            {"data": "diffValueStr2"},
                             {"data": "diffValueStr"},
+                            {"data": "volumePrice"},
 
                         ],
                         "language": {
@@ -255,25 +261,21 @@
 
             $("#dic1").DataTable({
                  "data": {{ data|tojson }},
-                         "iDisplayLength": 100,
+                         "aLengthMenu": [ [100, 150, 200, -1], [100, 150, 200, "All"] ],
+                         "iDisplayLength": 150,
                          columnDefs:[
                          {width:35, targets:0},
                          {width:150, targets:1},
                          {width:60, targets:2},
                          {width:45, targets:3},
-                         {width:60, targets:4},
-                         {width:35, targets:5},
-                         {width:60, targets:6},
-                         {width:35, targets:7}
+                         {width:100, targets:4},
                          ],
                         columns: [
                             {"data": "id"},
                             {"data": "korean_name"},
                             {"data": "change"},
                             {"data": "bw"},
-                            {"data": "valueStr2"},
                             {"data": "valueStr"},
-                            {"data": "diffValueStr2"},
                             {"data": "diffValueStr"}
                         ],
                 "language": {
@@ -300,7 +302,6 @@
 
 
     </script>
-    {% endblock %}
 </div>
 
 
