@@ -32,6 +32,7 @@
                 <th>상승폭</th>
                 <th>거래대금(백만)</th>
                 <th>변동금액(백만)</th>
+                <th>등락률</th>
             </tr>
             </thead>
         </table>
@@ -88,6 +89,7 @@
                 <th>상승폭</th>
                 <th>거래대금(백만)</th>
                 <th>변동금액(백만)</th>
+                <th>등락률</th>
                 <th>240분봉 거래대금(백만)</th>
             </tr>
             </thead>
@@ -176,6 +178,7 @@
                          {width:60, targets:2},
                          {width:45, targets:3},
                          {width:100, target:4},
+                         {width:100, targets:5},
                          ],
                         columns: [
                             {"data": "id"},
@@ -183,7 +186,8 @@
                             {"data": "change"},
                             {"data": "bw"},
                             {"data": "valueStr"},
-                            {"data": "diffValueStr"}
+                            {"data": "diffValueStr"},
+                            {"data": "rate"},
                         ],
                         "language": {
                             "emptyTable": "데이터가 없어요.",
@@ -223,7 +227,7 @@
                             {"data": "valueStr"},
                             {"data": "diffValueStr"},
                             {"data": "volumePrice"},
-
+                            {"data": "rate"},
                         ],
                         "language": {
                             "emptyTable": "데이터가 없어요.",
@@ -255,6 +259,7 @@
                          {width:60, targets:2},
                          {width:45, targets:3},
                          {width:100, targets:4},
+                         {width:100, targets:5},
                          ],
                         columns: [
                             {"data": "id"},
@@ -262,7 +267,8 @@
                             {"data": "change"},
                             {"data": "bw"},
                             {"data": "valueStr"},
-                            {"data": "diffValueStr"}
+                            {"data": "diffValueStr"},
+                            {"data": "rate"},
                         ],
                 "language": {
                     "emptyTable": "데이터가 없어요.",

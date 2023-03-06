@@ -80,6 +80,7 @@ def printListout(copyArr, preCnt, prevValue):
         "diffValueStr": get_wonwha_string(diffValue),
         "prevValue": prevValue,
         "bw": preCnt - copyArr['idx'],
+        "rate": copyArr['rate'],
     }
     try:
         pList.update({"volumePrice": get_wonwha_string(copyArr['volumePrice'])})
@@ -153,6 +154,7 @@ def get_crolling(oldList, type='Scheduler'):
                 ret = next((item for item in markets if item['market'] == ticker_data['market']), None)
                 volumes.append({'ticker': ticker_data['market'],
                                 'korean_name': ret['korean_name'],
+                                'rate': round(ticker_data['signed_change_rate']*100, 2),
                                 'volume': float(ticker_data['acc_trade_price_24h']),
                                 })
                 print(ticker_data['market'])
