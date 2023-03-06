@@ -149,7 +149,7 @@ def get_crolling(oldList, type='Scheduler'):
                 ret = next((item for item in markets if item['market'] == ticker_data['market']), None)
                 volumes.append({'ticker': ticker_data['market'],
                                 'korean_name': ret['korean_name'],
-                                'volume': float(ticker_data['acc_trade_price_24h'])
+                                'volume': float(ticker_data['acc_trade_price_24h']),
                                 })
                 print(ticker_data['market'])
                 break
@@ -172,7 +172,7 @@ def get_crolling(oldList, type='Scheduler'):
     else:
         result = compareList(oldList, top_volumes)
 
-    if(type == 'RealTime'):
+    if(type != 'RealTime'):
         for item in result:
             df = get_ohlcv(item['ticker'])
             if len(df) != 0:
