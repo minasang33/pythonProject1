@@ -1,4 +1,5 @@
 import datetime
+import math
 from datetime import timedelta
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -22,19 +23,19 @@ timeList4 = []
 timeList5 = []
 timeList6 = []
 
-# m1 = '45'
-# m2 = '46'
-# m3 = '47'
-# m4 = '48'
-# m5 = '49'
-# m6 = '50'
-
+# m1 = '52'
+# m2 = '53'
+# m3 = '54'
+# m4 = '55'
+# m5 = '56'
+# m6 = '57'
+#
 #억단위로 표기
 def get_wonwha_string(num_wonwha_amout):
     """ 입력된 원화를 4자리단위 한글로 변환한다 """
     str_result = ""  # 결과문자열 초기화
     str_sign = ""  # 부호 초기화
-    num_change = num_wonwha_amout  # 최초값을 모두 잔돈에 넣는다
+    num_change = math.trunc(num_wonwha_amout)  # 최초값을 모두 잔돈에 넣는다
 
     if num_change == 0:  # 0원이면
         str_result = "0"
@@ -74,9 +75,7 @@ def printListout(copyArr, preCnt, prevValue):
         "korean_name": copyArr['korean_name'],
         "change": str(preCnt)+"->"+str(copyArr['idx']),
         "value": copyArr['volume'],
-        # "valueStr": copyArr['volume'],
         "valueStr": get_wonwha_string(copyArr['volume']),
-        # "diffValueStr": diffValue,
         "diffValueStr": get_wonwha_string(diffValue),
         "prevValue": prevValue,
         "bw": preCnt - copyArr['idx'],
@@ -85,7 +84,7 @@ def printListout(copyArr, preCnt, prevValue):
     try:
         pList.update({"volumePrice": get_wonwha_string(copyArr['volumePrice'])})
     except KeyError:
-        print('keyError')
+        pList.update({"volumePrice": "0"})
     print(pList)
     return pList
 
@@ -184,11 +183,10 @@ def get_crolling(oldList, type='Scheduler'):
             if len(df) != 0:
                 print(df)
                 value = df['volumePrice'][0]
-                item["volumePrice"] = f"{value}"
+                item["volumePrice"] = get_wonwha_string(value)
                 print(item)
 
     return result
-
 
 def get_tickers(fiat="KRW", limit_info=False):
     """
@@ -261,6 +259,7 @@ def get_ohlcv(ticker, count=1, to=None):
     except Exception as x:
         print(x.__class__.__name__)
         return []
+
 def job0():
     global timeList1, timeList6
     timeList1 = get_crolling(timeList6)
@@ -291,6 +290,8 @@ def job5():
     timeList6 = get_crolling(timeList5)
     print(f'job5 : {time.strftime("%H:%M:%S")}')
     print(len(timeList6))
+
+
 @app.route('/scheduler')
 def scheduler():
     print("scheduler start")
@@ -312,14 +313,14 @@ def scheduler():
     # 매일 12시 실행
     sched.add_job(job5, 'cron', hour='21')
 
-
-    # sched.add_job(job0, 'cron', hour='16', minute=m1)
-    # sched.add_job(job1, 'cron', hour='16', minute=m2)
-    # sched.add_job(job2, 'cron', hour='16', minute=m3)
-    # sched.add_job(job3, 'cron', hour='17', minute=m4)
-    # sched.add_job(job4, 'cron', hour='17', minute=m5)
-    # sched.add_job(job5, 'cron', hour='17', minute=m6)
-
+    #
+    # sched.add_job(job0, 'cron', hour='21', minute=m1)
+    # sched.add_job(job1, 'cron', hour='21', minute=m2)
+    # sched.add_job(job2, 'cron', hour='21', minute=m3)
+    # sched.add_job(job3, 'cron', hour='21', minute=m4)
+    # sched.add_job(job4, 'cron', hour='21', minute=m5)
+    # sched.add_job(job5, 'cron', hour='21', minute=m6)
+    #
     sched.start()
     print("scheduler start")
     return redirect( url_for('index') )
