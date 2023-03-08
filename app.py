@@ -301,17 +301,17 @@ def scheduler():
     sched.remove_all_jobs()
 
     # 매일 16시 실행
-    sched.add_job(job0, 'cron', hour='1')
+    sched.add_job(job0, 'cron', hour='0')
     # 매일 20시 실행
-    sched.add_job(job1, 'cron', hour='5')
+    sched.add_job(job1, 'cron', hour='4')
     #매일 0시 실행
-    sched.add_job(job2, 'cron', hour='9')
+    sched.add_job(job2, 'cron', hour='8')
     # 매일 4시 실행
-    sched.add_job(job3, 'cron', hour='13')
+    sched.add_job(job3, 'cron', hour='12')
     # 매일 8시 실행
-    sched.add_job(job4, 'cron', hour='17')
+    sched.add_job(job4, 'cron', hour='16')
     # 매일 12시 실행
-    sched.add_job(job5, 'cron', hour='21')
+    sched.add_job(job5, 'cron', hour='20')
 
     #
     # sched.add_job(job0, 'cron', hour='21', minute=m1)
@@ -341,15 +341,15 @@ def index():
     t = today.hour
     print("hour:", t)
 
-    if 21 <= t:
+    if 20 <= t:
         oldList = timeList5
-    elif 17 <= t:
+    elif 16 <= t:
         oldList = timeList4
-    elif 13 <= t:
+    elif 12 <= t:
         oldList = timeList3
-    elif 9 <= t:
+    elif 8 <= t:
         oldList = timeList2
-    elif 5 <= t:
+    elif 4<= t:
         oldList = timeList1
     else:
         oldList = timeList6
