@@ -381,12 +381,13 @@ def index():
     sched.start()
     print("scheduler start - end")
 
-    return render_template('index.html',
-                           title="bitfind23",
-                           ktime=convert_kst(datetime.datetime.now()),
-                           time=datetime.datetime.now(),
-                           data=get_crolling(oldList, type="RealTime"),
-                           dataList=dataList)
+    # return render_template('index.html',
+    #                        title="bitfind23",
+    #                        ktime=convert_kst(datetime.datetime.now()),
+    #                        time=datetime.datetime.now(),
+    #                        data=get_crolling(oldList, type="RealTime"),
+    #                        dataList=dataList)
+    return render_template('index.html')
 
 
 
